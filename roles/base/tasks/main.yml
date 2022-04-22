@@ -1,0 +1,8 @@
+"""
+author:  puruikang
+data:  2022-4-22
+explanation:  customize task list
+"""
+
+-
+docker system info | grep -i dir | grep -oP '(?<=Docker Root Dir: )[^\t]+'
