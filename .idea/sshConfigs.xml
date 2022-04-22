@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="10.10.10.31" id="9863fcbd-2292-47ff-93c1-dbdd37870780" keyPath="D:\working\享宇\钥\KeyPair-puruikang.pem" port="22" customName="local_esxi_10.10.10.31" nameFormat="CUSTOM" username="root">
+        <option name="customName" value="local_esxi_10.10.10.31" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

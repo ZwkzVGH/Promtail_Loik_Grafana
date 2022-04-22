@@ -1,8 +1,20 @@
-"""
-author:  puruikang
-data:  2022-4-22
-explanation:  customize task list
-"""
+#author:  puruikang
+#data:  2022-4-22
+#explanation:  customize task list
 
--
-docker system info | grep -i dir | grep -oP '(?<=Docker Root Dir: )[^\t]+'
+- name: Get the home directory of the docker
+  shell:
+    "docker system info | grep -i dir | grep -oP '(?<=Docker Root Dir: )[^\t]+'"
+  register: docker_home
+
+- name: try to remove direcotry of the loki && Create
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+  loop:
+    - { path: "{{ root_directory }}", state: absent }
+    - { path: "{{ root_directory }}", state: directory }
+    - { path: "{{ root_directory }}/config", state: absent }
+    - { path: "{{ root_directory }}/config", state: directory }
+    - { path: "{{ root_directory }}/grafana", state: absent }
+    - { path: "{{ root_directory }}/grafana/data", state: directory }

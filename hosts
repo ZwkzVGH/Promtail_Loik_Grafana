@@ -1,5 +1,5 @@
-[local]
-local localhost ansible_connection=local
-
 [base]
 10.10.10.31
+
+[local]
+local localhost ansible_connection=local

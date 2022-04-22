@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="dc896ff2-349a-432e-a8e7-5f91af4747cd" name="local_esxi_10.10.10.31">
+        <fileTransfer accessType="SFTP" host="10.10.10.31" port="22" sshConfigId="9863fcbd-2292-47ff-93c1-dbdd37870780" sshConfig="local_esxi_10.10.10.31" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
