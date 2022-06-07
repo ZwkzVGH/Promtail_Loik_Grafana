@@ -1,0 +1,1 @@
+-Xms1024M -Xmx1024M -Xss512k -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/logs/java_heap_dump.hprof -Duser.timezone=GMT+8 -Dfile.encoding=UTF-8 -Dlogging.config=/opt/boot/conf/spec/logback.xml -Dspring.profiles.active=prod,common -Dspring.config.additional-location=file:/opt/boot/conf/com/,file:/opt/boot/conf/spec/

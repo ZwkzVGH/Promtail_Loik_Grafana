@@ -1,0 +1,23 @@
+root_path: /data/aaa
+# 脚本会删除该目录，并重新创建，慎重填入二级目录，建议使用三级目录或多级目录
+
+domain:
+  grafana: local-grafana.com
+  # port1 端口映射   对应nginx容器443
+  port1: 10443
+  # port2 端口映射   对应nginx容器80
+  port2: 1080
+
+component:
+  loki:
+    image: registry.dev.com:5000/grafana/loki:2.4.1
+    ip: __ip__ # loki部署的宿主机ip
+    port: __port__ # 对外暴露端口，默认3100
+  grafana:
+    image: registry.dev.com:5000/grafana/grafana:8.2.2
+    port: __port__ # 对外暴露端口，默认3000
+    ip: __ip__ # grafana部署的宿主机ip
+  promtail:
+    image: registry.dev.com:5000/grafana/promtail:latest
+  nginx:
+    image: registry.dev.com:5000/grafana/pub-nginx_master:1dc71143

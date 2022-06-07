@@ -1,0 +1,51 @@
+version: '3.0'
+
+networks:
+  loki:
+
+services:
+  loki:
+    image: {{ component.loki.image }}
+    container_name: loki
+    restart: always
+    user: root
+    ports:
+      - {{ component.loki.port }}:3100
+    volumes:
+      - {{ root_path }}/config/loki:/etc/loki/config
+      - {{ root_path }}/loki-data/:/loki/
+    command: -config.file=/etc/loki/config/loki-config.yaml
+    networks:
+      - loki
+
+  grafana:
+    image: {{ component.grafana.image }}
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - {{ component.grafana.port }}:3000
+    volumes:
+      - {{ root_path }}/grafana/data:/var/lib/grafana
+    environment:
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      # 此处修改ip为宿主机ip
+      - GF_SERVER_ROOT_URL=http://{{ component.grafana.ip }}:3000/xylogs/
+    depends_on:
+     - loki
+    networks:
+      - loki
+
+  nginx_grafana:
+    image: {{ component.nginx.image }}
+    restart: unless-stopped
+    container_name: nginx_grafana
+    ports:
+      - {{ domain.port1 }}:443
+      - {{ domain.port2 }}:80
+    volumes:
+      - {{ root_path }}/config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - grafana
+    networks:
+      - loki
+

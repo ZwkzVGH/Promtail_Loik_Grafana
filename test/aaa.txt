@@ -1,0 +1,15 @@
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+        <conversionRule conversionWord="msg" converterClass="com.xye.core.utils.SensitiveDataConverter"> </conversionRule>
+        <property name="LOG_LEVEL_APP" value="INFO"/>
+        <springProperty scope="context" name="PROJECT_NAME" source="spring.application.name"/>
+        <property name="log.path" value="/home/logs"/>
+        <include resource="META-INF/xyecore-logback.xml"/>
+
+        <!--控制台打印资源加载信息-->
+        <root  level="${LOG_LEVEL_APP}">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="longRunning"/>
+            <appender-ref ref="longRunningError"/>
+        </root>
+    </configuration>

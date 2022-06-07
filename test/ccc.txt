@@ -1,0 +1,47 @@
+appconf
+goods
+mall
+manage                                        Could not resolve placeholder 'ip.huawei.appKey' in value "${ip.huawei.appKey}"
+order-center
+order-credit
+order-goods
+order-installments                            https://code.xyebank.com/xyarch/order-installments.git         core
+order-general-info
+user
+user-center
+user-center-gateway
+mobile-gateway
+client-gateway                                Logging system failed to initialize using configuration from '/opt/boot/conf/spec/logback.xml
+common-gateway                                没有负载
+statistics
+statistics-gateway                            ERROR in ch.qos.logback.core.pattern.parser.Compiler@2f7c7260 - Failed to instantiate converter class [com.xye.core.utils.SensitiveDataConverter]
+                                              for keyword [msg] ch.qos.logback.core.util.DynamicClassLoadingException: Failed to instantiate type com.xye.core.utils.SensitiveDataConverter
+xye-excel
+interface-intercept
+bonus-distribution
+case-book
+configure
+coupon-center
+coupon-use-rule
+discount
+distribution-finace
+distribution-manger
+distribution-plan
+distribution-user
+finance-verify
+mind-recommend                              Caused by: java.lang.IllegalStateException: Logback configuration error detected:
+                                                         ERROR in ch.qos.logback.core.joran.action.AppenderRefAction - Could not find an appender named [STDOUT]. Did you define it below instead of above in the configuration file?
+mobile-hebao-management                Autowired annotation is not supported on static methods: public static void com.xye.core.conf.MyHostsConfig.setORDERCENTERHOST(java.lang.String)
+old-sjd-data-model
+paymentout                                        打包失败
+platform-statistics
+plug-recommend
+product-limit                                      打包失败
+question-library
+promoter                                            无法拉取代码，我来排查一哈
+route-configure                                  /data/src/route-configure-service/src/main/java/com/xye/core/route/configure/conf/SwaggerConfig.java:[22,17] incompatible types: springfox.documentation.service.Contact cannot be converted to java.lang.String
+                                                           打包失败
+thirdparty-login-plug                           打包失败
+thirdparty-plug
+work-order
+xye-distributi

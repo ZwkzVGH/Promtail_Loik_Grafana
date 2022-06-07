@@ -1,0 +1,112 @@
+- name: try to remove root_path && create it
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+  loop:
+    - { path: "{{ root_path }}", state: "absent" }
+    - { path: "{{ root_path }}", state: "directory" }
+    - { path: "{{ root_path }}/config/nginx", state: "directory" }
+    - { path: "{{ root_path }}/loki-data", state: "directory" }
+    - { path: "{{ root_path }}/grafana/data", state: "directory" }
+    - { path: "{{ root_path }}/promtail", state: "directory" }
+    - { path: "/tmp/grafana_loki_images", state: "absent" }
+    - { path: "/tmp/grafana_loki_images", state: "directory" }
+
+- name: 获取docker 家目录
+  shell:  ssh `cat /etc/hosts|grep node|awk {'print $1'}|sed -n 1p` docker system info | grep docker | grep Root | awk {'print $NF'}
+  register: docker_home
+
+- name: send grafana_loki_promtail images -1
+  copy:
+    src: images
+    dest: /tmp/
+
+- name send grafana_loki_promtail images -2
+  shell:
+    cd /tmp/images && cat image.tar.* | tar -zxp
+
+- name: try to remove images
+  shell:
+    "docker rmi -f {{ item }}"
+  loop:
+    - {{ compoent.loki.image }}
+    - {{ compoent.grafana.image }}
+    - {{ compoent.promtail.image }}
+    - {{ compoent.nginx.image }}
+  ignore_errors: true
+
+- name: load images
+  shell:
+    "cd /tmp/images/images/ && docker load -i {{ item }}"
+  loop:
+    - grafana_8_2_2.tar
+    - loki_2_4_1.tar
+    - promtail_latest.tar
+    - pub-nginx_master.tar
+
+- name: send grafana data
+  unarchive:
+    src: grafana.tgz
+    dest: "{{ root_path }}"
+    owner: 472
+    group: 0
+    mode: 0777
+
+- name: check if docker compose exists
+  shell:
+    find / -name docker-compose | grep -vE "files|rpm|share|yaml|yml"
+  register: find_docker_compose
+
+- name: try send docker-compose
+  copy:
+    name: docker-compose
+    dest: /usr/bin/docker-compose
+    mode: 0755
+  when: find_docker_compose.stdout | length<0 or find_docker_compose.rc != 0
+
+- name: send docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ root_path }}/docker-compose.yml"
+
+- name: create loki directory
+  file:
+    path: "{{ root_path }}/config/loki"
+    state: directory
+    owner: 10001
+    group: 10001
+    mode: 0755
+
+- name: send loki-config.yaml
+  copy:
+    src: loki-config.yaml
+    dest: "{{ root_path }}/config/loki/loki-config.yaml"
+    owner: 10001
+    group: 10001
+    mode: 0644
+
+- name: send promtail-k8s.yml
+  template:
+    src: promtail-k8s.yaml.j2
+    dest: "{{ root_path }}/promtail/promtail-k8s.yaml"
+
+- name: send nginx conf
+  template:
+    src: nginx_loki.conf.j2
+    dest: "{{ root_path }}/config/nginx/nginx_loki.conf"
+
+- name: kubectl apply -f promtail-k8s.yaml
+  shell: "kubectl apply -f {{ root_path }}/promtail/promtail-k8s.yaml"
+
+- name: start docker-compose.yml
+  shell: "cd {{ root_path }} && docker-compose up -d"
+
+- name: wait grafana 30s
+  wait_for:
+    timeout: 30
+
+#- name: reset grafana user pass
+#  shell: docker exec -it grafana bash -c "grafana-cli admin reset-admin-password admin" >/dev/null 2&>1
+
+#- name: restart grafana container
+ # shell: docker restart grafana

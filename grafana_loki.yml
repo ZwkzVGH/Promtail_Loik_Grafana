@@ -1,0 +1,6 @@
+---
+- hosts: grafana_loki_promtail
+  roles:
+    - grafana
+  vars_files:
+    - "./roles/grafana/vars/main.yaml"

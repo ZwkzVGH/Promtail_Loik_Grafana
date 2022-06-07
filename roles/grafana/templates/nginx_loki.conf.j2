@@ -1,0 +1,26 @@
+server
+{
+    listen 80;
+    server_name _;
+    real_ip_header X-Real-IP;
+    # 此处为k8s虚拟ip网段，kubeadm没有特殊修改过默认都是172
+    set_real_ip_from 172.16.0.0/16;
+    # 此处修改为traefik宿主机网段，一般为node节点网段
+    set_real_ip_from 10.128.0.0/24;
+    location ~/xylogs/ {
+       # openvpn出口ip
+       # allow 119.3.13.52/32;
+       # deny  all;
+       # 此处为grafana宿主机ip
+       proxy_pass http://{{ component.grafana.ip }}:{{ component.grafana.port }};
+    }
+    location ~/xylogs/api/live {
+       # allow 119.3.13.52/32;
+       # deny  all;
+       proxy_http_version 1.1;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection "Upgrade";
+       proxy_set_header Host $http_host;
+       proxy_pass http://{{ component.grafana.ip }}:{{ component.grafana.port }};
+    }
+}
